@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="position:absolute;z-index:6;left: 30px;">
+    <p>{{ movies|length }} Titles</p>
+    {% if current_user.is_authenticated %}
+    <form method="post">
+        Movie Name <input type="text" name="name" autocomplete="off" required>
+        Photo <input type="text" name="photo" autocomplete="off" required>
+        Year <input type="text" name="year" autocomplete="off" required>
+        <input class="btn" type="submit" name="submit">
+    </form>
+    {% endif %}
+    <div style="z-index:10;">
+        <ul class="movie-list">
+            {% for movie in movies %}
+            <li>{{ movie.name }} - {{ movie.year }}
+                <div style="padding-left:900px;">
+                    {% if current_user.is_authenticated %}
+                        <a class="btn" href="{{ url_for('edit2', movie_id=movie.id) }}">Edit</a>
+                        <form class="inline-form" method="post" action="{{ url_for('.delete2', movie_id=movie.id) }}">
+                            <input class="btn" type="submit" name="delete2" value="Delete" onclick="return confirm('Are you sure?')">
+                        </form>
+                    {% endif %}
+                    <a class="btn" href="{{ url_for('detail2', movie_id=movie.id) }}">Detail</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{user.name}}'s Vedio World</title>
+<link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+<div class="head-box" style="z-index:10;">
+    <div class="head wrap">
+        <div class="logo fl">
+            <a href=""><img src="{{ url_for('static', filename='images/logo.png') }}"></a>
+            <div class="head-name">
+                <font color="#FFFF00" size="4">{{ user.name }}'s Video World</font>
+            </div>
+        </div>
+        <div class="head-right fr">
+            <div class="head-a fr">
+                <form action="/search" method="get"> 
+                    <font style="FONT-FAMILY: 华文行楷" color="#DDB56B">在这里搜索</font><input type="text" name="content" placeholder="请输入内容" autocomplete="off" required>
+                    <input class="btn" type="submit" name="submit" value="Search">
+                </form>
+            </div>
+            <div class="nav fr">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('music') }}">Music</a></li>
+                <li><a href="{{ url_for('movie') }}">Movie</a></li>
+                <li><a href="{{ url_for('comment') }}">Comment</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="block">
+    <div class="bg">
+        <img src="{{ url_for('static', filename='images/bg.gif') }}">
+    </div>
+    <div style="z-index:5;">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+<div class="footer fl"style="z-index:1;">
+   <div class="wrap">
+      <div class="foot">
+            <div class="foot-left fl">
+                 <a href="">关于我：RKR, 一个来自同济的网络小白，网页的制作者</a>
+            </div>
+            <div class="foot-right fr">
+                <a href="{{ url_for('index') }}">Home</a>
+           </div>   
+   </div>
+</div>
+</body>
+</html>

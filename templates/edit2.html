@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{user.name}}'s Vedio World</title>
+<style type="text/css">
+body{
+    font-family:"宋体";
+    font-size:16px;
+    color:#FFF;
+}
+
+.head {
+	height:90px;
+}
+.head-box {
+	background:#000;
+	height:90px;
+	position:fixed;
+	top:0;
+	width:100%;
+	left:0;
+	z-index:999;
+}
+.head-right {
+	width:750px;
+}	
+.head-a {
+	height:26px;
+	margin:16px 0 10px;
+}
+.head-name{
+    position:absolute;
+    top:35px;
+    left:200px;
+}
+.block{
+    position:absolute;
+    top:90px;
+    left:40px;
+    height:385px;
+    width:100%;
+    overflow-y:scroll;
+    z-index: 4;
+}
+.footer {
+	height:90px;
+	background:#000;
+    position:absolute;
+    left:0px;
+    bottom:0px; 
+    width:100%;
+}
+.foot {
+	height:75px;
+	line-height:75px;
+	border-bottom:1px solid #141414;
+	padding-top:10px;
+}
+.foot-left a {
+	display:block;
+	width:450px;
+	float:left;
+	font-size:14px;
+	color:#fff;
+}
+.foot-right a {
+	display:block;
+	width:300px;
+	float:left;
+	font-size:14px;
+	color:#fff;
+}
+.bg{
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:400px;
+    width:100%;
+    z-index:5;
+}
+.nav {
+    height:22px;
+    line-height:22px;
+    font-size:17px;
+    color:#60b6ff;
+    font-weight:bold;
+}	
+.nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    width: 1265px;
+}	
+.nav li {
+    float:left;
+    margin-left:38px;
+    position:relative;
+}
+.nav li:hover {
+    border-bottom:2px solid #549bd7;
+}
+
+.nav li a{
+    color:#fff;
+}
+.nav li:hover a {
+    color:#549bd7;
+}
+
+a { 
+    text-decoration: none;
+    color:#666666; 
+}
+a:hover{
+    text-decoration:none;
+}
+
+.fl { 
+    float: left; 
+}
+.fr { 
+    float: right; 
+}
+.wrap { 
+    width: 1100px; 
+    margin: 0 auto;
+    border:0; 
+}
+.logo {
+	margin-top:3px;
+}
+	
+.link {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    background: #F5C518;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
+/* 覆盖某些浏览器对 input 元素定义的字体 */
+input[type=submit] {
+    font-family: inherit;
+}
+input[type=text] {
+    border: 1px solid #ddd;
+}
+input[name=year] {
+    width: 50px;
+}
+
+.btn {
+    font-size: 12px;
+    padding: 3px 5px;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: 1px solid #555555;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    text-decoration: none;
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+}
+
+.inline-form{
+    display:inline;
+}                                                            
+</style>
+</head>
+
+<body>
+<div class="head-box" style="z-index:10;">
+    <div class="head wrap">
+        <div class="logo fl">
+            <a href=""><img src="{{ url_for('static', filename='images/logo.png') }}"></a>
+            <div class="head-name">
+                <font color="#FFFF00" size="4">{{ user.name }}'s Video World</font>
+            </div>
+        </div>
+        <div class="head-right fr">
+            <div class="head-a fr">
+                <form action="/search" method="get"> 
+                    <font style="FONT-FAMILY: 华文行楷" color="#DDB56B">在这里搜索</font><input type="text" name="content" placeholder="请输入内容" autocomplete="off" required>
+                    <input class="btn" type="submit" name="submit" value="Search">
+                </form>
+            </div>
+            <div class="nav fr">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('music') }}">Music</a></li>
+                <li><a href="{{ url_for('movie') }}">Movie</a></li>
+                <li><a href="{{ url_for('comment') }}">Comment</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="block">
+    <div class="bg">
+        <img src="{{ url_for('static', filename='images/bg.gif') }}">
+    </div>
+    <div style="position:absolute;z-index:6;left: 30px;">
+        <h3>Edit item</h3>
+        <form method="post">
+            <span class="fr">
+                <a class="btn" href="{{ url_for('edit2', movie_id=movie.id) }}">Renew</a>
+                <form method="post" action="/movie/edit2/<int:movie_id>">
+                    Brief Introduction <textarea name="intro">{{movie.intro}}</textarea>
+                </form>
+                Year <input type="text" name="year" autocomplete="off" required value="{{ movie.year }}">
+                <input class="btn" type="submit" name="submit" value="Update">
+            </span>
+        </form>
+    </div>
+</div>
+<div class="footer fl"style="z-index:1;">
+   <div class="wrap">
+      <div class="foot">
+            <div class="foot-left fl">
+                 <a href="">关于我：RKR, 一个来自同济的网络小白</a>
+            </div>
+            <div class="foot-right fr">
+                <a href="{{ url_for('index') }}">Home</a>
+           </div>   
+   </div>
+</div>
+</body>
+</html>

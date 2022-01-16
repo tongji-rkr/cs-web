@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="position:absolute;z-index:6;left: 30px;">
+    {% if content != "None" %}
+    {{content}}的搜索结果<hr>
+    Music:
+    <ul class="music-list">
+        {% for music in musics %}
+        <li><font color="#FF0000">{{music.name}}</font>
+            <div style="padding-left:1000px;">
+                {% if current_user.is_authenticated %}
+                    <a class="btn" href="{{ url_for('edit1', music_id=music.id) }}">Edit</a>
+                    <form class="inline-form" method="post" action="{{ url_for('.delete1', music_id=music.id) }}">
+                        <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
+                    </form>
+                {% endif %}
+                <a class="btn" href="{{ url_for('detail1', music_id=music.id) }}">Detail</a>
+                <a class="link" href="https://music.163.com/#/search/m/?s={{music.name }}" target="_blank" title="Find this music on wyy">CloudMusic</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    Movie：
+    <ul class="movie-list">
+        {% for movie in movies1 %}
+        <li><font color="#FF0000">{{ movie.name }}</font> - {{ movie.year }}
+            <div style="padding-left:1000px;">
+                {% if current_user.is_authenticated %}
+                    <a class="btn" href="{{ url_for('edit2', movie_id=movie.id) }}">Edit</a>
+                    <form class="inline-form" method="post" action="{{ url_for('.delete2', movie_id=movie.id) }}">
+                        <input class="btn" type="submit" name="delete2" value="Delete" onclick="return confirm('Are you sure?')">
+                    </form>
+                {% endif %}
+                <a class="btn" href="{{ url_for('detail2', movie_id=movie.id) }}">Detail</a>
+                <a class="link" href="https://www.imdb.com/find?q={{movie.name }}" target="_blank" title="Find this movie on IMDb">IMDb</a>
+            </div>
+        </li>
+        {% endfor %}
+        {% for movie in movies2 %}
+        <li>{{ movie.name }} - <font color="#FF0000">{{ movie.year }}</font> 
+            <div style="padding-left:900px;">
+                {% if current_user.is_authenticated %}
+                    <a class="btn" href="{{ url_for('edit2', movie_id=movie.id) }}">Edit</a>
+                    <form class="inline-form" method="post" action="{{ url_for('.delete2', movie_id=movie.id) }}">
+                        <input class="btn" type="submit" name="delete2" value="Delete" onclick="return confirm('Are you sure?')">
+                    </form>
+                {% endif %}
+                <a class="btn" href="{{ url_for('detail2', movie_id=movie.id) }}">Detail</a>
+                <a class="link" href="https://www.imdb.com/find?q={{movie.name }}" target="_blank" title="Find this movie on IMDb">IMDb</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="position:absolute;z-index:6;left: 30px;">
+    <p>{{ musics|length }} Titles</p>
+    {% if current_user.is_authenticated %}
+    <form method="post">
+        Singer Name <input type="text" name="name" autocomplete="off" required>
+        Photo <input type="text" name="photo" autocomplete="off" required>
+        Brief Introduction <input type="text" name="intro" autocomplete="off" required>
+        <input class="btn" type="submit" name="submit" value="Add">
+    </form>
+    {% endif %}
+    <div style="z-index:10;">
+        <ul class="music-list">
+            {% for music in musics %}
+            <li>{{ music.name }}
+                <div style="padding-left:900px;">
+                    {% if current_user.is_authenticated %}
+                        <a class="btn" href="{{ url_for('edit1', music_id=music.id) }}">Edit</a>
+                        <form class="inline-form" method="post" action="{{ url_for('.delete1', music_id=music.id) }}">
+                            <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
+                        </form>
+                    {% endif %}
+                    <a class="btn" href="{{ url_for('detail1', music_id=music.id) }}">Detail</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

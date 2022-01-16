@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="position:absolute;z-index:6;left: 30px;">
+    <p>{{ comments|length }} Titles</p>
+    <form method="post">
+        Name(Singer/Music/Movie) <input type="text" name="name" autocomplete="off" required>
+        Score <input type="text" name="score" autocomplete="off" required>
+        Comment <input type="text" name="cmt" autocomplete="off" required>
+        <input class="btn" type="submit" name="submit" value="Publish">
+    </form>
+    
+    <ul class="comment-list">
+        {% for comment in comments %}
+        <li>匿名 -------------------------------------- 评论时间：{{ comment.year }}.{{comment.month}}.{{comment.day}}<br>
+            Name:{{comment.name}}-Score:{{comment.score}}
+            <br>{{comment.cmt}}
+            {% if current_user.is_authenticated %}
+                <form style="padding-left:600px;" class="inline-form" method="post" action="{{ url_for('.delete3', comment_id=comment.id) }}">
+                    <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
+                </form>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
